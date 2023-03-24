@@ -33,38 +33,13 @@ function linkshaper_menu() {
 		'LinkShaper', // menu title
 		'manage_options', // capability
 		'linkshaper', // menu slug
-		'linkshaper_page' // function to display page content
+		'load_main_template' // function to display page content
 	);
 }
 add_action('admin_menu', 'linkshaper_menu');
 
-function linkshaper_page() {
-	?>
-    <div class="wrap">
-        <h1>LinkShaper</h1>
-        <form method="post" action="">
-            <label for="long_url">Long URL:</label>
-            <input type="text" name="long_url" id="long_url" required>
-            <br><br>
-            <input type="submit" name="submit" value="Shorten URL" class="button button-primary">
-        </form>
-		<?php
-		if(isset($_POST['submit'])) {
-			// code to shorten URL and save to database
-			global $wpdb;
-			$table_name = $wpdb->prefix . 'linkshaper';
-			$long_url = $_POST['long_url'];
-			$short_code = substr(md5($long_url), 0, 8); // generate short URL using MD5 hash
-			try {
-				$wpdb->insert($table_name, array('long_url' => $long_url, 'short_code' => $short_code));
-				echo 'Short URL: ' . home_url() . '/' . $short_code; // display short URL to user
-			} catch (Exception $e) {
-                echo 'Error: ' . $e->getMessage();
-            }
-		}
-		?>
-    </div>
-	<?php
+function load_main_template() {
+	require_once( 'template/main.php');
 }
 
 // Redirect short URLs to their original URLs
