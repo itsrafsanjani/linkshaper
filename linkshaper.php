@@ -61,3 +61,12 @@ function linkshaper_redirect_short_url() {
 		exit;
 	}
 }
+
+// start session
+add_action('init', 'start_session');
+
+function start_session() {
+	if(!session_id()) {
+		session_start();
+	}
+}
